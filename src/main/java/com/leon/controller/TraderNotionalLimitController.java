@@ -1,0 +1,134 @@
+package com.leon.controller;
+
+import com.leon.model.TraderNotionalLimit;
+import com.leon.service.DeskNotionalLimitService;
+import com.leon.service.TraderNotionalLimitService;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
+
+@RestController()
+@RequestMapping("/limits/trader")
+@RequiredArgsConstructor
+public class TraderNotionalLimitController
+{
+    private static final Logger log = LoggerFactory.getLogger(TraderNotionalLimitController.class);
+    @Autowired
+    private final TraderNotionalLimitService traderNotionalLimitService;
+    @Autowired
+    private final DeskNotionalLimitService deskNotionalLimitService;
+
+    @CrossOrigin
+    @GetMapping("/{id}")
+    public ResponseEntity<TraderNotionalLimit> getTraderNotionalLimit(@NotNull @PathVariable UUID id)
+    {
+        String errorId = UUID.randomUUID().toString();
+        MDC.put("errorId", errorId);
+        
+        try
+        {
+            TraderNotionalLimit trader = traderNotionalLimitService.getTraderNotionalLimit(id);
+            if (trader == null)
+            {
+                log.error("ERR-404: Trader not found with ID: {}", id);
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(trader);
+        }
+        catch (Exception e)
+        {
+            log.error("ERR-405: Error retrieving trader: {}", id, e);
+            return ResponseEntity.internalServerError().build();
+        }
+        finally
+        {
+            MDC.remove("errorId");
+        }
+    }
+
+    @CrossOrigin
+    @GetMapping()
+    public ResponseEntity<List<TraderNotionalLimit>> getAllTradersNotionalLimits()
+    {
+        String errorId = UUID.randomUUID().toString();
+        MDC.put("errorId", errorId);
+
+        try
+        {
+            List<TraderNotionalLimit> traders = traderNotionalLimitService.getAllTraderNotionalLimits();
+            return ResponseEntity.ok(traders);
+        }
+        catch (Exception e)
+        {
+            log.error("ERR-405: Error retrieving all traders.", e);
+            return ResponseEntity.internalServerError().build();
+        }
+        finally
+        {
+            MDC.remove("errorId");
+        }
+    }
+
+    @CrossOrigin
+    @GetMapping("/desk/{deskId}")
+    public ResponseEntity<List<TraderNotionalLimit>> getDeskTraderNotionalLimitsByDeskId(@NotNull @PathVariable UUID deskId)
+    {
+        String errorId = UUID.randomUUID().toString();
+        MDC.put("errorId", errorId);
+        
+        try
+        {
+            if (!deskNotionalLimitService.deskNotionalLimitExists(deskId))
+            {
+                log.error("ERR-406: Desk not found for trader lookup: {}", deskId);
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(traderNotionalLimitService.getDeskTraderNotionalLimits(deskId));
+        }
+        catch (Exception e)
+        {
+            log.error("ERR-407: Error retrieving traders for desk: {}", deskId, e);
+            return ResponseEntity.internalServerError().build();
+        }
+        finally
+        {
+            MDC.remove("errorId");
+        }
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTraderNotionalLimits(@NotNull @PathVariable UUID id)
+    {
+        String errorId = UUID.randomUUID().toString();
+        MDC.put("errorId", errorId);
+        
+        try
+        {
+            if (!traderNotionalLimitService.traderNotionalLimitExists(id))
+            {
+                log.error("ERR-408: Trader not found for deletion: {}", id);
+                return ResponseEntity.notFound().build();
+            }
+            traderNotionalLimitService.deleteTraderNotionalLimit(id);
+            log.info("Successfully deleted trader: {}", id);
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception e)
+        {
+            log.error("ERR-409: Error deleting trader: {}", id, e);
+            return ResponseEntity.internalServerError().build();
+        }
+        finally
+        {
+            MDC.remove("errorId");
+        }
+    }
+} 
