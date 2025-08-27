@@ -3,7 +3,6 @@ package com.leon.controller;
 import com.leon.model.Currency;
 import com.leon.service.CurrencyManager;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -15,12 +14,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("currency")
-@RequiredArgsConstructor
 public class CurrencyController {
     private static final Logger log = LoggerFactory.getLogger(CurrencyController.class);
     
     @Autowired
-    private final CurrencyManager currencyManager;
+    private CurrencyManager currencyManager;
     
     @GetMapping("/rates")
     public ResponseEntity<Map<Currency, Double>> getCurrentRates() {

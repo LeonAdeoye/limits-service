@@ -22,10 +22,12 @@
         </encoder>
     </appender>
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>
 
-    <logger name="com.leon" level="INFO"/>
+    <logger level="TRACE" name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+
+<!--    <logger name="com.leon" level="INFO"/>-->
 </configuration> 

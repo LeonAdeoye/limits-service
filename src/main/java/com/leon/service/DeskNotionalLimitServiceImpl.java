@@ -5,7 +5,6 @@ import com.leon.model.DeskNotionalLimit;
 import com.leon.repository.DeskNotionalLimitRepository;
 import com.leon.repository.DeskRepository;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +17,14 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-@RequiredArgsConstructor
 public class DeskNotionalLimitServiceImpl implements DeskNotionalLimitService
 {
     private static final Logger log = LoggerFactory.getLogger(DeskNotionalLimitServiceImpl.class);
     private final Map<UUID, DeskNotionalLimit> deskNotionalLimitCache = new ConcurrentHashMap<>();
     @Autowired
-    private final DeskNotionalLimitRepository deskNotionalLimitRepository;
+    private DeskNotionalLimitRepository deskNotionalLimitRepository;
     @Autowired
-    private final DeskRepository deskRepository;
+    private DeskRepository deskRepository;
     private Map<UUID, Desk> desksCache = new ConcurrentHashMap<>();
 
     @PostConstruct

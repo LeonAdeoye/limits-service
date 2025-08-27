@@ -3,7 +3,6 @@ package com.leon.controller;
 import com.leon.model.DeskNotionalLimit;
 import com.leon.service.DeskNotionalLimitService;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -14,15 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController()
+@RestController
 @RequestMapping("/limits/desk")
-@RequiredArgsConstructor
 public class DeskNotionalLimitController
 {
     private static final Logger log = LoggerFactory.getLogger(DeskNotionalLimitController.class);
 
     @Autowired
-    private final DeskNotionalLimitService deskNotionalLimitService;
+    private DeskNotionalLimitService deskNotionalLimitService;
 
     @CrossOrigin
     @PostMapping

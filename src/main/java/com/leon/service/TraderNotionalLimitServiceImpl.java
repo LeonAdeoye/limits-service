@@ -5,7 +5,6 @@ import com.leon.model.TraderNotionalLimit;
 import com.leon.repository.TraderNotionalLimitRepository;
 import com.leon.repository.TraderRepository;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class TraderNotionalLimitServiceImpl implements TraderNotionalLimitService
 {
     private static final Logger log = LoggerFactory.getLogger(TraderNotionalLimitServiceImpl.class);
     
     @Autowired
-    private final TraderNotionalLimitRepository traderNotionalLimitRepository;
+    private TraderNotionalLimitRepository traderNotionalLimitRepository;
     @Autowired
-    private final TraderRepository traderRepository;
+    private TraderRepository traderRepository;
     
     private Map<UUID, Trader> tradersCache = new ConcurrentHashMap<>();
     private final Map<UUID, TraderNotionalLimit> traderNotionalLimitCache = new ConcurrentHashMap<>();

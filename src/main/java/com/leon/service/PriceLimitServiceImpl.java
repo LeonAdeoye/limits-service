@@ -2,7 +2,6 @@ package com.leon.service;
 
 import com.leon.model.PriceLimit;
 import com.leon.repository.PriceLimitRepository;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class PriceLimitServiceImpl implements PriceLimitService
 {
     private static final Logger log = LoggerFactory.getLogger(PriceLimitServiceImpl.class);
     
     @Autowired
-    private final PriceLimitRepository priceLimitRepository;
+    private PriceLimitRepository priceLimitRepository;
 
     @Override
     @Transactional

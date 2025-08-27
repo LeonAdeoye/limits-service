@@ -2,7 +2,6 @@ package com.leon.service;
 
 import com.leon.model.ADVLimit;
 import com.leon.repository.ADVLimitRepository;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class ADVLimitServiceImpl implements ADVLimitService
 {
     private static final Logger log = LoggerFactory.getLogger(ADVLimitServiceImpl.class);
     
     @Autowired
-    private final ADVLimitRepository advLimitRepository;
+    private ADVLimitRepository advLimitRepository;
 
     @Override
     @Transactional

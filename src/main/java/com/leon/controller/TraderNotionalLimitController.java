@@ -4,7 +4,6 @@ import com.leon.model.TraderNotionalLimit;
 import com.leon.service.DeskNotionalLimitService;
 import com.leon.service.TraderNotionalLimitService;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -14,16 +13,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController()
+@RestController
 @RequestMapping("/limits/trader")
-@RequiredArgsConstructor
 public class TraderNotionalLimitController
 {
     private static final Logger log = LoggerFactory.getLogger(TraderNotionalLimitController.class);
     @Autowired
-    private final TraderNotionalLimitService traderNotionalLimitService;
+    private TraderNotionalLimitService traderNotionalLimitService;
     @Autowired
-    private final DeskNotionalLimitService deskNotionalLimitService;
+    private DeskNotionalLimitService deskNotionalLimitService;
 
     @CrossOrigin
     @GetMapping("/{id}")

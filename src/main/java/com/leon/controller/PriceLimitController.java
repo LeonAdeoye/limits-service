@@ -3,7 +3,6 @@ package com.leon.controller;
 import com.leon.model.PriceLimit;
 import com.leon.service.PriceLimitService;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -14,15 +13,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController()
+@RestController
 @RequestMapping("/limits/price")
-@RequiredArgsConstructor
 public class PriceLimitController
 {
     private static final Logger log = LoggerFactory.getLogger(PriceLimitController.class);
 
     @Autowired
-    private final PriceLimitService priceLimitService;
+    private PriceLimitService priceLimitService;
+
+    @CrossOrigin
+    @RequestMapping("/heartbeat")
+    String heartbeat()
+    {
+        return "Here I am";
+    }
 
     @CrossOrigin
     @PostMapping

@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController()
+@RestController
 @RequestMapping("/limits/adv")
-@RequiredArgsConstructor
 public class ADVLimitController
 {
     private static final Logger log = LoggerFactory.getLogger(ADVLimitController.class);
 
     @Autowired
-    private final ADVLimitService advLimitService;
+    private ADVLimitService advLimitService;
 
     @CrossOrigin
     @PostMapping
