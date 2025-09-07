@@ -23,13 +23,6 @@ public class PriceLimitController
     private PriceLimitService priceLimitService;
 
     @CrossOrigin
-    @RequestMapping("/heartbeat")
-    String heartbeat()
-    {
-        return "Here I am";
-    }
-
-    @CrossOrigin
     @PostMapping
     public ResponseEntity<PriceLimit> savePriceLimit(@RequestBody PriceLimit priceLimit)
     {

@@ -54,15 +54,36 @@ public class AmpsMessageInboundProcessor implements MessageHandler
             javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(dateFormatter));
             javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(timeFormatter));
             objectMapper.registerModule(javaTimeModule);
-            for(Message message : (ampsClient.subscribe(ordersTopic, "/actionEvent = 'SUBMIT_TO_EXCH' AND /state = 'ACCEPTED_BY_DESK'")))
-                invoke(message);
-
+            
+            // Start message processing in a separate thread to avoid blocking startup
+            startMessageProcessing();
         }
         catch (Exception e)
         {
             log.error("ERR-007: Failed to initialize AMPS client", e);
             throw e;
         }
+    }
+    
+    private void startMessageProcessing()
+    {
+        Thread messageProcessingThread = new Thread(() -> {
+            try
+            {
+                log.info("Starting AMPS message processing thread");
+                for(Message message : (ampsClient.subscribe(ordersTopic, "/actionEvent = 'SUBMIT_TO_EXCH' AND /state = 'ACCEPTED_BY_DESK'")))
+                {
+                    invoke(message);
+                }
+            }
+            catch (Exception e)
+            {
+                log.error("ERR-008: Error in message processing thread", e);
+            }
+        });
+        messageProcessingThread.setDaemon(true);
+        messageProcessingThread.setName("AMPS-MessageProcessor");
+        messageProcessingThread.start();
     }
     
     @Override
